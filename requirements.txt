@@ -2,3 +2,5 @@ reportlab
 Pillow
 requests
 selenium
+flask
+webdriver_manager
