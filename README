@@ -6,7 +6,7 @@ python main.py
 curl --location --request GET 'http://localhost:6060/download/name/One-Piece/id/dfc7ecb5-e9b3-4aa5-a61b-a498993cd935/chapter/960'
 
 
-docker run -d --name my-selenium-grid-driver --network my-selenium-network -p 4444:4444 -p 7900:7900 --shm-size="6g" selenium/standalone-chrome:latest
+docker run -d --name selenium-grid-driver --network selenium-network -p 4444:4444 -p 7900:7900 --shm-size="6g" selenium/standalone-chrome:latest
 
 docker build -t manga-scrapper .
-docker run --name manga-scrapper -p 6060:6060 --shm-size="6g" --network my-selenium-network manga-scrapper
+docker run --name manga-scrapper -p 6060:6060 --shm-size="6g" --network selenium-network manga-scrapper

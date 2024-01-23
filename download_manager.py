@@ -11,7 +11,7 @@ from utils import (create_folder, create_pdf, download_file, get_all_chapters,
 def download_chapter(root_folder, host_url, base_url, name, one_piece_id, chapter_start, chapter_end):
     chapters = get_all_chapters(host_url + "chapter/getall?mangaIdentification=" + one_piece_id)
 
-    hub_url = "http://my-selenium-grid-driver:4444"
+    hub_url = "http://selenium-grid-driver:4444"
     options = Options()
 
     driver = webdriver.Remote(command_executor=hub_url, options=options)
