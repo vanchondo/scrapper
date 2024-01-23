@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  manga-scrapper-svc:
+    image: registry.victoranchondo.com/manga-scrapper-svc:latest
+    container_name: manga-scrapper-svc
+    ports:
+      - 6060:6060
+    restart: unless-stopped
+    depends_on:
+      - selenium-grid-driver
+    networks:
+      - selenium-network
+    shm_size: 2g
+
+  selenium-grid-driver:
+    image: selenium/standalone-chrome:latest
+    container_name: selenium-grid-driver
+    ports:
+      - 4444:4444
+      - 7900:7900
+    restart: unless-stopped
+    networks:
+      - selenium-network
+    shm_size: 2g
+
+networks:
+  selenium-network:
+    driver: bridge
