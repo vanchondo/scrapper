@@ -5,7 +5,7 @@ services:
     image: registry.victoranchondo.com/manga-scrapper-svc:latest
     container_name: manga-scrapper-svc
     ports:
-      - 6060:6060
+      - 6066:6066
     restart: unless-stopped
     depends_on:
       - selenium-grid-driver
