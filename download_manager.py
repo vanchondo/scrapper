@@ -11,6 +11,10 @@ from utils import (create_folder, create_pdf, download_file, get_all_chapters,
 def download_chapter(root_folder, host_url, base_url, one_piece_id, chapter_start, chapter_end, config):
     chapters = get_all_chapters(host_url + "chapter/getall?mangaIdentification=" + one_piece_id)
 
+    # If chapter_end was not provided, use the latest chapter as end.
+    if (chapter_end == 0):
+        chapter_end = chapters[-1]['FriendlyChapterNumberUrl']
+
     for chapter in chapters:
         chapter_number = chapter['FriendlyChapterNumberUrl']
         current_chapter = float(chapter_number.replace('-', '.'))
