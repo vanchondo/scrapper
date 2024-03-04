@@ -15,7 +15,7 @@ def download_chapter(root_folder, host_url, base_url, one_piece_id, chapter_star
         chapter_number = chapter['FriendlyChapterNumberUrl']
         current_chapter = float(chapter_number.replace('-', '.'))
 
-        if current_chapter >= chapter_start and current_chapter <= chapter_end:
+        if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
             identification = chapter['Identification']
             page_count = chapter['PagesCount']
             print(f"Chapter={current_chapter} pages={page_count}")
