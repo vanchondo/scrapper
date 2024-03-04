@@ -15,6 +15,8 @@ def download_chapter(root_folder, host_url, base_url, one_piece_id, chapter_star
     if (chapter_end == 0):
         chapter_end = chapters[-1]['FriendlyChapterNumberUrl']
 
+    print(f"Trying to download from chapter {chapter_start} to {chapter_end}")
+
     for chapter in chapters:
         chapter_number = chapter['FriendlyChapterNumberUrl']
         current_chapter = float(chapter_number.replace('-', '.'))
