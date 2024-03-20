@@ -3,12 +3,13 @@ import shutil
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 from utils import (create_folder, create_pdf, download_file, get_all_chapters,
                    get_name)
 
 
-def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end, config):
+def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end):
     chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
 
     # If chapter_end was not provided, use the latest chapter as end.
@@ -33,22 +34,22 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
             chapter_folder = manga_name + " v" + get_name(chapter_number, "0000")
             create_folder(chapter_folder)
 
-            driver = webdriver.Firefox()
-            driver.implicitly_wait(10)
-            driver.maximize_window()
-            driver.get(base_url + chapter_number + "/" + identification)
-            pages = driver.find_elements(By.CLASS_NAME, "ImageContainer")
+            options = Options()
+            options.add_argument("-headless")
+            with webdriver.Firefox(options=options) as driver:
+                driver.implicitly_wait(10)
+                driver.get(base_url + chapter_number + "/" + identification)
+                pages = driver.find_elements(By.CLASS_NAME, "ImageContainer")
 
-            current_page_number = 1
+                current_page_number = 1
 
-            for page in pages:
-                page_id = page.get_attribute("id")
-                image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
-                print(f"Downloading image from: {image_url}")
-                file_name = chapter_folder + "/" + get_name(str(current_page_number), "00") + ".jpeg"
-                download_file(image_url, file_name)
-                current_page_number += 1
+                for page in pages:
+                    page_id = page.get_attribute("id")
+                    image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
+                    print(f"Downloading image from: {image_url}")
+                    file_name = chapter_folder + "/" + get_name(str(current_page_number), "00") + ".jpeg"
+                    download_file(image_url, file_name)
+                    current_page_number += 1
 
             create_pdf(chapter_folder, chapter_folder + ".pdf")
             shutil.rmtree(chapter_folder)
-            driver.close()
