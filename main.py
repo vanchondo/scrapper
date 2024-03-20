@@ -33,5 +33,8 @@ print("Get all chapters...")
 chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
 print(f"Found {len(chapters)} chapters")
 
-# Download chapters within the specified range
-download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end)
+if len(chapters) == 0 :
+    print("get_all_chapters() returned no chapters!")
+else :
+    # Download chapters within the specified range
+    download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end)
