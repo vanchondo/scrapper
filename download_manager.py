@@ -9,7 +9,7 @@ from utils import (create_folder, create_pdf, download_file, get_all_chapters,
                    get_name)
 
 
-def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end):
+def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end, destination_folder, folder_name):
     chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
 
     # If chapter_end was not provided, use the latest chapter as end.
@@ -31,8 +31,8 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
             page_count = chapter['PagesCount']
             print(f"Chapter={current_chapter} pages={page_count}")
 
-            chapter_folder = manga_name + " v" + get_name(chapter_number, "0000")
-            create_folder(chapter_folder)
+            chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
+            create_folder(chapter_folder_tmp)
 
             options = Options()
             options.add_argument("-headless")
@@ -47,9 +47,11 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
                     page_id = page.get_attribute("id")
                     image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
                     print(f"Downloading image from: {image_url}")
-                    file_name = chapter_folder + "/" + get_name(str(current_page_number), "00") + ".jpeg"
+                    file_name = chapter_folder_tmp + "/" + get_name(str(current_page_number), "00") + ".jpeg"
                     download_file(image_url, file_name)
                     current_page_number += 1
 
-            create_pdf(chapter_folder, chapter_folder + ".pdf")
-            shutil.rmtree(chapter_folder)
+            output_folder = destination_folder + folder_name + "/"
+            create_folder(output_folder)
+            create_pdf(chapter_folder_tmp, output_folder + chapter_folder_tmp + ".pdf")
+            shutil.rmtree(chapter_folder_tmp)

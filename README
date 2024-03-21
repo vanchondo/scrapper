@@ -1,4 +1,4 @@
 ## To run
 pip install -r requirements.txt
 
-python main.py --mangaName One-Piece --mangaId dfc7ecb5-e9b3-4aa5-a61b-a498993cd935
+python main.py --mangaName One-Piece --mangaId dfc7ecb5-e9b3-4aa5-a61b-a498993cd935 --folderName 'One Piece'
