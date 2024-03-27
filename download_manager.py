@@ -26,14 +26,14 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
         chapter_number = chapter['FriendlyChapterNumberUrl']
         current_chapter = float(chapter_number.replace('-', '.'))
 
-        output_folder = destination_folder + folder_name + "/"
-        chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
-        final_destination = output_folder + chapter_folder_tmp + ".pdf"
+        if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
+            output_folder = destination_folder + folder_name + "/"
+            chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
+            final_destination = output_folder + chapter_folder_tmp + ".pdf"
 
-        if isFileExists(final_destination):
-            print(f"File already exists {final_destination}, skipping download")
-        else:
-            if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
+            if isFileExists(final_destination):
+                print(f"File already exists {final_destination}, skipping download")
+            else:
                 identification = chapter['Identification']
                 page_count = chapter['PagesCount']
                 print(f"Chapter={current_chapter} pages={page_count}")
