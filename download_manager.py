@@ -26,32 +26,40 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
         chapter_number = chapter['FriendlyChapterNumberUrl']
         current_chapter = float(chapter_number.replace('-', '.'))
 
-        if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
-            identification = chapter['Identification']
-            page_count = chapter['PagesCount']
-            print(f"Chapter={current_chapter} pages={page_count}")
+        output_folder = destination_folder + folder_name + "/"
+        chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
+        final_destination = output_folder + chapter_folder_tmp + ".pdf"
 
-            chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
-            create_folder(chapter_folder_tmp)
+        if isFileExists(final_destination):
+            print(f"File already exists {final_destination}, skipping download")
+        else:
+            if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
+                identification = chapter['Identification']
+                page_count = chapter['PagesCount']
+                print(f"Chapter={current_chapter} pages={page_count}")
 
-            options = Options()
-            options.add_argument("-headless")
-            with webdriver.Firefox(options=options) as driver:
-                driver.implicitly_wait(10)
-                driver.get(base_url + chapter_number + "/" + identification)
-                pages = driver.find_elements(By.CLASS_NAME, "ImageContainer")
+                create_folder(chapter_folder_tmp)
 
-                current_page_number = 1
+                options = Options()
+                options.add_argument("-headless")
+                with webdriver.Firefox(options=options) as driver:
+                    driver.implicitly_wait(10)
+                    driver.get(base_url + chapter_number + "/" + identification)
+                    pages = driver.find_elements(By.CLASS_NAME, "ImageContainer")
 
-                for page in pages:
-                    page_id = page.get_attribute("id")
-                    image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
-                    print(f"Downloading image from: {image_url}")
-                    file_name = chapter_folder_tmp + "/" + get_name(str(current_page_number), "00") + ".jpeg"
-                    download_file(image_url, file_name)
-                    current_page_number += 1
+                    current_page_number = 1
 
-            output_folder = destination_folder + folder_name + "/"
-            create_folder(output_folder)
-            create_pdf(chapter_folder_tmp, output_folder + chapter_folder_tmp + ".pdf")
-            shutil.rmtree(chapter_folder_tmp)
+                    for page in pages:
+                        page_id = page.get_attribute("id")
+                        image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
+                        print(f"Downloading image from: {image_url}")
+                        file_name = chapter_folder_tmp + "/" + get_name(str(current_page_number), "00") + ".jpeg"
+                        download_file(image_url, file_name)
+                        current_page_number += 1
+
+                create_folder(output_folder)
+                create_pdf(chapter_folder_tmp, final_destination)
+                shutil.rmtree(chapter_folder_tmp)
+
+def isFileExists(file_path):
+    return os.path.exists(file_path)
