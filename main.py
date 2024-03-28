@@ -1,8 +1,9 @@
 import argparse
 import configparser
+from datetime import datetime
 
 from download_manager import download_chapter
-from utils import create_folder, get_all_chapters
+from utils import get_all_chapters
 
 # Create an ArgumentParser object
 parser = argparse.ArgumentParser(description='Process some integers.')
@@ -35,6 +36,7 @@ inManga_url = config.get('Default', 'inMangaHostUrl')
 get_all_url = config.get('Default', 'getAllUrl')
 destination_folder = config.get('Default', 'destinationFolder')
 
+print(f"{datetime.now()} - Starting scrapper")
 print("Get all chapters...")
 chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
 print(f"Found {len(chapters)} chapters")
@@ -44,3 +46,5 @@ if len(chapters) == 0 :
 else :
     # Download chapters within the specified range
     download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end, destination_folder, folder_name)
+
+print(f"{datetime.now()} - Ending scrapper")
