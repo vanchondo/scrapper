@@ -7,16 +7,19 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 
-def check_file_size(file_path):
+def is_file_exists(file_path):
+    return os.path.exists(file_path)
+
+def check_file_size(file_path, size_in_kb=10):
     # Check if the file exists
-    if os.path.exists(file_path):
+    if is_file_exists(file_path):
         # Get the size of the file in bytes
         file_size = os.path.getsize(file_path)
         # Convert bytes to kilobytes
         file_size_kb = file_size / 1024
 
         # Check if the file size is over 10 KB
-        return file_size_kb > 10
+        return file_size_kb > size_in_kb
     else:
         return False
 

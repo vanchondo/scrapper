@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 
-from utils import (create_folder, create_pdf, download_file, get_all_chapters,
+from utils import (check_file_size, create_folder, create_pdf, download_file,
                    get_name)
 
 
@@ -30,7 +30,7 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
             chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
             final_destination = output_folder + chapter_folder_tmp + ".pdf"
 
-            if isFileExists(final_destination):
+            if check_file_size(final_destination, 1024):
                 print(f"File already exists {final_destination}, skipping download")
             else:
                 identification = chapter['Identification']
@@ -62,6 +62,3 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                     shutil.rmtree(chapter_folder_tmp)
                 except Exception as ex:
                     print(f"Pdf file {final_destination} was not created", ex)
-
-def isFileExists(file_path):
-    return os.path.exists(file_path)
