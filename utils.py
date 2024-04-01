@@ -7,13 +7,29 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 
-def download_file(url, file_name):
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(file_name, "wb") as file:
-            file.write(response.content)
+def check_file_size(file_path):
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # Get the size of the file in bytes
+        file_size = os.path.getsize(file_path)
+        # Convert bytes to kilobytes
+        file_size_kb = file_size / 1024
+
+        # Check if the file size is over 10 KB
+        return file_size_kb > 10
     else:
-        print(f"Failed to download the image. Status code: {response.status_code}")
+        return False
+
+def download_file(url, file_name):
+    if not check_file_size(file_name):
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(file_name, "wb") as file:
+                file.write(response.content)
+        else:
+            print(f"Failed to download the image. Status code: {response.status_code}")
+    else:
+        print(f"File image already exists, no need to download again.")
 
 def create_pdf(folder_path, output_pdf):
     image_files = sorted([f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))])

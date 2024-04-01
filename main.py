@@ -1,6 +1,5 @@
 import argparse
 import configparser
-import random
 from datetime import datetime
 
 from download_manager import download_chapter
@@ -45,8 +44,9 @@ print(f"Found {len(chapters)} chapters")
 if len(chapters) == 0 :
     print("get_all_chapters() returned no chapters!")
 else :
-    random.shuffle(chapters)
+
+    chapters = sorted(chapters, key=lambda obj: obj["Number"])
     # Download chapters within the specified range
-    download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapters, chapter_start, chapter_end, destination_folder, folder_name)
+    download_chapter(manga_name, resources_host_url, base_url, chapters, chapter_start, chapter_end, destination_folder, folder_name)
 
 print(f"{datetime.now()} - Ending scrapper")

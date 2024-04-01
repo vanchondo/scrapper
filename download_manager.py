@@ -9,7 +9,7 @@ from utils import (create_folder, create_pdf, download_file, get_all_chapters,
                    get_name)
 
 
-def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapters, chapter_start, chapter_end, destination_folder, folder_name):
+def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter_start, chapter_end, destination_folder, folder_name):
 
     # If chapter_end was not provided, use the latest chapter as end.
     if (chapter_end == 0):
@@ -57,8 +57,11 @@ def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_
                         current_page_number += 1
 
                 create_folder(output_folder)
-                create_pdf(chapter_folder_tmp, final_destination)
-                shutil.rmtree(chapter_folder_tmp)
+                try:
+                    create_pdf(chapter_folder_tmp, final_destination)
+                    shutil.rmtree(chapter_folder_tmp)
+                except Exception as ex:
+                    print(f"Pdf file {final_destination} was not created", ex)
 
 def isFileExists(file_path):
     return os.path.exists(file_path)
