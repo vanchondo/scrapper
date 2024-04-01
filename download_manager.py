@@ -9,8 +9,7 @@ from utils import (create_folder, create_pdf, download_file, get_all_chapters,
                    get_name)
 
 
-def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapter_start, chapter_end, destination_folder, folder_name):
-    chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
+def download_chapter(manga_name, inManga_url, resources_host_url, base_url, get_all_url, manga_id, chapters, chapter_start, chapter_end, destination_folder, folder_name):
 
     # If chapter_end was not provided, use the latest chapter as end.
     if (chapter_end == 0):
