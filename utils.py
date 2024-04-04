@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import requests
@@ -30,9 +31,9 @@ def download_file(url, file_name):
             with open(file_name, "wb") as file:
                 file.write(response.content)
         else:
-            print(f"Failed to download the image. Status code: {response.status_code}")
+            logging.error(f"Failed to download the image. Status code: {response.status_code}")
     else:
-        print(f"File image already exists, no need to download again.")
+        logging.debug(f"File image already exists, no need to download again.")
 
 def create_pdf(folder_path, output_pdf):
     image_files = sorted([f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))])
@@ -58,7 +59,7 @@ def get_all_chapters(url):
         pageData = json.loads(page['data'])
         return pageData['result']
     else:
-        print(f"Invalid response {response}")
+        logging.error(f"Invalid response {response}")
         return {}
 
 def create_folder(folder):

@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 
@@ -19,7 +20,7 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
     if (chapter_start == 0):
         chapter_start = chapters[-1]['FriendlyChapterNumberUrl']
 
-    print(f"Trying to download from chapter {chapter_start} to {chapter_end}")
+    logging.info(f"Trying to download from chapter {chapter_start} to {chapter_end}")
 
     for chapter in chapters:
         chapter_number = chapter['FriendlyChapterNumberUrl']
@@ -31,11 +32,11 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
             final_destination = output_folder + chapter_folder_tmp + ".pdf"
 
             if check_file_size(final_destination, 1024):
-                print(f"File already exists {final_destination}, skipping download")
+                logging.debug(f"File already exists {final_destination}, skipping download")
             else:
                 identification = chapter['Identification']
                 page_count = chapter['PagesCount']
-                print(f"Chapter={current_chapter} pages={page_count}")
+                logging.info(f"Downloading chapter={current_chapter} pages={page_count}")
 
                 create_folder(chapter_folder_tmp)
 
@@ -51,7 +52,7 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                     for page in pages:
                         page_id = page.get_attribute("id")
                         image_url = f"{resources_host_url}images/manga/{manga_name}/chapter/{chapter_number}/page/{current_page_number}/{page_id}"
-                        print(f"Downloading image from: {image_url}")
+                        logging.debug(f"Downloading image from: {image_url}")
                         file_name = chapter_folder_tmp + "/" + get_name(str(current_page_number), "00") + ".jpeg"
                         download_file(image_url, file_name)
                         current_page_number += 1
@@ -61,4 +62,4 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                     create_pdf(chapter_folder_tmp, final_destination)
                     shutil.rmtree(chapter_folder_tmp)
                 except Exception as ex:
-                    print(f"Pdf file {final_destination} was not created", ex)
+                    logging.error(f"Pdf file {final_destination} was not created", ex)

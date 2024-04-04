@@ -1,6 +1,6 @@
 import argparse
 import configparser
-from datetime import datetime
+import logging
 
 from download_manager import download_chapter
 from utils import get_all_chapters
@@ -36,17 +36,19 @@ inManga_url = config.get('Default', 'inMangaHostUrl')
 get_all_url = config.get('Default', 'getAllUrl')
 destination_folder = config.get('Default', 'destinationFolder')
 
-print(f"{datetime.now()} - Starting scrapper")
-print("Get all chapters...")
+logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(levelname)s - ' + manga_name + ' - %(message)s')
+
+logging.info("Starting scrapper")
+logging.info("Get all chapters...")
 chapters = get_all_chapters(inManga_url + get_all_url + manga_id)
-print(f"Found {len(chapters)} chapters")
+logging.info(f"Found {len(chapters)} chapters")
 
 if len(chapters) == 0 :
-    print("get_all_chapters() returned no chapters!")
+    logging.error("get_all_chapters() returned no chapters!")
 else :
 
     chapters = sorted(chapters, key=lambda obj: obj["Number"])
     # Download chapters within the specified range
     download_chapter(manga_name, resources_host_url, base_url, chapters, chapter_start, chapter_end, destination_folder, folder_name)
 
-print(f"{datetime.now()} - Ending scrapper")
+logging.info("Ending scrapper")
