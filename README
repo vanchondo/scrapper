@@ -2,3 +2,7 @@
 pip install -r requirements.txt
 
 python main.py --mangaName One-Piece --mangaId dfc7ecb5-e9b3-4aa5-a61b-a498993cd935 --folderName 'One Piece'
+
+python main.py --mangaName Jujutsu-Kaisen --mangaId d88692a5-c341-47fc-8e39-da11a8fdee82 --folderName 'Jujutsu Kaisen' --chapterStart 1
+
+python main.py --mangaName Kimetsu-no-Yaiba --mangaId 78352626-0e2c-4b10-9610-28abf57c6881 --folderName 'Kimetsu no Yaiba' --chapterStart 1
