@@ -8,4 +8,4 @@ build
 *.class
 __pycache__
 .idea
-OnePieceManga
+tmp
