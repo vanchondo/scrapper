@@ -28,7 +28,7 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
 
         if current_chapter >= float(chapter_start) and current_chapter <= float(chapter_end):
             output_folder = destination_folder + folder_name + "/"
-            chapter_folder_tmp = folder_name + " v" + get_name(chapter_number, "0000")
+            chapter_folder_tmp = "tmp/" + folder_name + " v" + get_name(chapter_number, "0000")
             final_destination = output_folder + chapter_folder_tmp + ".pdf"
 
             if check_file_size(final_destination, 1024):
@@ -63,3 +63,4 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                     shutil.rmtree(chapter_folder_tmp)
                 except Exception as ex:
                     logging.error(f"Pdf file {final_destination} was not created", ex)
+                    shutil.rmtree(final_destination)
