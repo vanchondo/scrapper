@@ -64,4 +64,7 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                     shutil.rmtree(chapter_folder_tmp)
                 except Exception as ex:
                     logging.error(f"Pdf file {final_destination} was not created", ex)
-                    shutil.rmtree(final_destination)
+                    try:
+                        shutil.rmtree(final_destination)
+                    except OSError as e:
+                        logging.debug(f"File {final_destination} does not exist")
