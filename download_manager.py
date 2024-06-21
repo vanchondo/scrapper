@@ -36,8 +36,9 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
                 logging.debug(f"File already exists {final_destination}, skipping download")
             else:
                 identification = chapter['Identification']
-                page_count = chapter['PagesCount']
-                logging.info(f"Downloading chapter={current_chapter} pages={page_count}")
+                # page_count = chapter['PagesCount']
+                # logging.info(f"Downloading chapter={current_chapter} pages={page_count}")
+                logging.info(f"Downloading chapter={current_chapter}")
 
                 create_folder(chapter_folder_tmp)
 

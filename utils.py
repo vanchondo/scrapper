@@ -3,6 +3,7 @@ import logging
 import os
 
 import requests
+from bs4 import BeautifulSoup
 from PIL import Image
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -67,3 +68,37 @@ def create_folder(folder):
 
 def get_name(name, prefix):
     return (prefix + name)[len(name):]
+
+def get_all_chapters_html_version(url):
+    chapters = []
+    # Send a GET request to the URL
+    response = requests.get(url)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the select element with id="ChapList"
+        select_element = soup.find('select', {'id': 'ChapList'})
+
+        if select_element:
+            # Extract all option tags and their values
+            options = select_element.find_all('option')
+
+            # Loop through options and print their values
+            for option in options:
+                chapter_number = option.text.strip().replace(',', '')
+                chapter = {
+                    "Identification" : option['value'],
+                    "Number" : float(chapter_number),
+                    "FriendlyChapterNumberUrl" : chapter_number.replace('.', '-')
+                }
+
+                chapters.append(chapter)
+        else:
+            logging.info("Select element with id='ChapList' not found.")
+    else:
+        logging.error(f"Failed to retrieve page: {response.status_code}")
+
+    return chapters
