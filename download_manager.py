@@ -16,9 +16,9 @@ def download_chapter(manga_name, resources_host_url, base_url, chapters, chapter
     if (chapter_end == 0):
         chapter_end = chapters[-1]['FriendlyChapterNumberUrl']
 
-    # If chapter_start was not provided, use the latest chapter as end.
+    # If chapter_start was not provided, use the first one.
     if (chapter_start == 0):
-        chapter_start = chapters[-1]['FriendlyChapterNumberUrl']
+        chapter_start = chapters[0]['FriendlyChapterNumberUrl']
 
     logging.info(f"Trying to download from chapter {chapter_start} to {chapter_end}")
 
